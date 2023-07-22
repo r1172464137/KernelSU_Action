@@ -118,12 +118,12 @@ jobs:
       if: env.ENABLE_KERNELSU == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        if ${{ env.KERNELSU_TAG }} == stable
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
-          echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+        if [ ${{ env.KERNELSU_TAG }} = stable ]; then
+           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+           echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
         else
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
-          echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+           curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
+           echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
         fi
 
     - name: Setup Configuration for Kernel
