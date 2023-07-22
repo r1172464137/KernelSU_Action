@@ -103,8 +103,6 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
-        cd $GITHUB_WORKSPACE/kernel_workspace
-        rm -rf KernelSU
        
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
@@ -120,8 +118,13 @@ jobs:
       if: env.ENABLE_KERNELSU == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
-        echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+        if ${{ env.KERNELSU_TAG }} == stable
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+          echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+        else
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
+          echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+        fi
 
     - name: Setup Configuration for Kernel
       run: |
