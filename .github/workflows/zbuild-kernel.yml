@@ -222,7 +222,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         sed -i '/CONFIG_LOCALVERSION/d' arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
-        echo 'CONFIG_LOCALVERSION=-KSU-$(wget -qO- -t1 -T2 "https://api.github.com/repos/tiann/KernelSU/releases/latest" | grep "tag_name" | head -n 1 | awk -F":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+        echo 'CONFIG_LOCALVERSION=-KSU-$(curl -s https://api.github.com/repos/tiann/KernelSU/tags | jq -r '.[0].name')' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
 
     - name: 设置ccache缓存
       if: env.ENABLE_CCACHE == 'true'
