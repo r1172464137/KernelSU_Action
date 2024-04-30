@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: 工作配置
       run: |
-        CONFIG_ENV=$(cat "${{ inputs.config_name }}".env | grep -w "CONFIG_ENV" | head -n 1 | cut -d "=" -f 2)
+        CONFIG_ENV=$(cat ${{ inputs.config_name }}.env | grep -w "CONFIG_ENV" | head -n 1 | cut -d "=" -f 2)
         echo "ADD_LOCALVERSION_TO_FILENAME=$(cat $CONFIG_ENV | grep -w "ADD_LOCALVERSION_TO_FILENAME" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "LXC_DOCKER=$(cat $CONFIG_ENV | grep -w "LXC_DOCKER" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "METHOD_OK=$(cat $CONFIG_ENV | grep -w "METHOD_OK" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
